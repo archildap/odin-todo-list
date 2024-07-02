@@ -1,3 +1,3 @@
-export default function makeTodos(title, description, dueDate, priority) {
-    return { title, description, dueDate, priority }
+export default function makeTodos(title, description, dueDate, priority, check) {
+    return { title, description, dueDate, priority, check }
 }

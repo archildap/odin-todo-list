@@ -27,9 +27,6 @@ function projectsController() {
 }
 
 const projectOne = projectsController();
-projectOne.addTodo(makeTodos('Study', 'Study web development', 'TODAY!', 'HIGH'), 'dailyTodos');
-projectOne.logTodos();
-projectOne.removeTodo('dailyTodos', 0);
-projectOne.addTodo(makeTodos('Study', 'Study web development', 'TODAY!', 'HIGH'), 'dailyTodos');
-
+projectOne.addTodo(makeTodos('Study', 'Study web development', 'TODAY!', 'HIGH', true), 'dailyTodos');
+projectOne.logTodos()
 
