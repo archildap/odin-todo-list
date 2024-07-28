@@ -1,18 +1,19 @@
-import makeTodos from './makeTodos';
-import makeProjects from './makeProjects';
+import makeTodo from './makeTodo.js';
 import printTodos from './printTodos.js';
 import todoField from './todoField.js';
 import printProjects from './printProjects.js';
+import './style.css';
 
 
 function projectsController() {
-    const projects = makeProjects();
+    const projects = {};
 
     const addProject = (projectName) => {
         projects[projectName] = [];
     }
 
     const addTodo = (obj, project) => {
+        if (!projects[project]) return;
         projects[project].push(obj);
     }
 
@@ -20,14 +21,17 @@ function projectsController() {
         projects[project].splice(index, 1);
     }
 
+    const removeProject = (project) => {
+        delete projects[project];
+    }
+
     const getProjects = () => {
         return { ...projects };
     }
 
     addProject('daily', projects);
-    addProject('work', projects);
 
-    return { addProject, getProjects, addTodo, removeTodo }
+    return { addProject, getProjects, addTodo, removeTodo, removeProject }
 }
 
 
@@ -36,37 +40,49 @@ function displayController() {
 
     let currentProject = 'daily';
 
-    const updateScreen = () => {
+    const clearScreen = () => {
         const todosContainer = document.querySelector('.todos-container');
-        const projectsContainer = document.querySelector('.projects-container');
-        projectsContainer.remove();
+        const projectsSection = document.querySelector('.project-section');
+        const todoForm = document.querySelector('#todo-form');
+        projectsSection.remove();
         todosContainer.remove();
-        printTodos(projects.getProjects()[currentProject], currentProject);
+        todoForm.remove();
+    }
+
+    const printScreen = () => {
         printProjects(projects.getProjects());
+        todoField();
+        printTodos(projects.getProjects()[currentProject], currentProject);
+        document.querySelector('.todo-submit-btn').addEventListener('click', handleTodoSubmit);
         document.querySelector('.project-submit').addEventListener('click', handleAddProject);
-        document.querySelectorAll('.project').forEach(item => item.addEventListener('click', handleProjectChange))
+        document.querySelectorAll('.project').forEach(item => item.addEventListener('click', handleProjectChange));
+        document.querySelectorAll('.project-remove').forEach(item => item.addEventListener('click', handleProjectRemove));
         if (document.querySelectorAll('.todo-remove')) {
             document.querySelectorAll('.todo-remove').forEach(item => item.addEventListener('click', handleTodoRemove));
         }
     }
 
-    const handleTaskSubmit = (event) => {
+    const updateScreen = () => {
+        clearScreen();
+        printScreen();
+    }
+
+    const handleTodoSubmit = (event) => {
         event.preventDefault();
         const title = document.getElementById('todo-title');
         const description = document.getElementById('todo-description');
         const dueDate = document.getElementById('todo-dueDate');
         const priority = document.getElementById('todo-priority');
-        const check = document.getElementById('todo-check');
 
-        if (title.value === '' || description.value === '' || dueDate.value === '' || priority.value === '' || check.value === '') {
+        if (title.value === '' || description.value === '' || dueDate.value === '' || priority.value === '') {
             return
         }
-        projects.addTodo(makeTodos(title.value, description.value, dueDate.value, priority.value, check.value), currentProject);
+
+        projects.addTodo(makeTodo(title.value, description.value, dueDate.value, priority.value), currentProject);
         title.value = '';
         description.value = '';
         dueDate.value = '';
         priority.value = '';
-        check.value = '';
         updateScreen();
     }
 
@@ -76,11 +92,10 @@ function displayController() {
     }
 
     const handleAddProject = () => {
-        const projectInput = document.querySelector('.project-input');
-
-        if (document.querySelector('.project-input').value) {
-            projects.addProject(document.querySelector('.project-input').value);
-            console.log(projects.getProjects())
+        const projectName = document.querySelector('.project-input').value;
+        if (projectName) {
+            projects.addProject(projectName);
+            currentProject = projectName;
             updateScreen();
         }
     }
@@ -93,21 +108,19 @@ function displayController() {
         updateScreen();
     }
 
-    const initialLoad = () => {
-        printProjects(projects.getProjects());
-        todoField();
-        printTodos(projects.getProjects()[currentProject], currentProject);
-        document.querySelector('.submit-btn').addEventListener('click', handleTaskSubmit)
-        document.querySelector('.project-submit').addEventListener('click', handleAddProject);
-        document.querySelectorAll('.project').forEach(item => item.addEventListener('click', handleProjectChange))
+    const handleProjectRemove = (e) => {
+        const projectToRemove = e.target.dataset.project
+        projects.removeProject(projectToRemove);
+        if (projectToRemove === currentProject) {
+            currentProject = Object.keys(projects.getProjects())[0];
+        }
+        updateScreen();
     }
 
-    console.log(projects.getProjects())
-
-    return { initialLoad }
+    return { printScreen }
 }
 
-displayController().initialLoad();
+displayController().printScreen();
 
 
 

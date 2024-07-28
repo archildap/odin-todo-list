@@ -18,22 +18,50 @@ function fieldMaker(fieldLabel, inputType, idName) {
     return fieldLi;
 }
 
+function dropDownMenu(question, options, id) {
+    const fieldLi = document.createElement('li');
+    const fieldLabel = document.createElement('label');
+    const fieldSelect = document.createElement('select');
+    const fieldOption = document.createElement('option');
+
+    fieldLabel.setAttribute('for', id);
+    fieldSelect.setAttribute('id', id);
+    fieldSelect.setAttribute('name', id);
+    fieldOption.setAttribute('value', '');
+
+    fieldLabel.textContent = question;
+    fieldOption.textContent = '--Please choose an option--';
+
+    fieldSelect.appendChild(fieldOption);
+    fieldLi.appendChild(fieldLabel);
+    fieldLi.appendChild(fieldSelect);
+
+    options.map(option => {
+        const fieldOption = document.createElement('option');
+
+        fieldOption.textContent = option;
+        fieldOption.setAttribute('value', option.toLowerCase());
+        fieldSelect.appendChild(fieldOption);
+    })
+
+    return fieldLi;
+}
+
 export default function todoField() {
     const form = document.createElement('form');
     const formUl = document.createElement('ul');
-    const submitBtn = document.createElement('button');
+    const todoSubmitBtn = document.createElement('button');
 
     formUl.appendChild(fieldMaker('title', 'text', 'todo-title'));
     formUl.appendChild(fieldMaker('description', 'text', 'todo-description'));
-    formUl.appendChild(fieldMaker('dueDate', 'text', 'todo-dueDate'));
-    formUl.appendChild(fieldMaker('priority', 'text', 'todo-priority'));
-    formUl.appendChild(fieldMaker('check', 'text', 'todo-check'));
+    formUl.appendChild(fieldMaker('dueDate', 'datetime-local', 'todo-dueDate'));
+    formUl.appendChild(dropDownMenu('Task Priority', ['low', 'Medium', 'High'], 'todo-priority'));
 
-    submitBtn.textContent = 'Add Task';
-    submitBtn.classList.add('submit-btn');
+    todoSubmitBtn.textContent = 'Add Task';
+    todoSubmitBtn.classList.add('todo-submit-btn');
     form.setAttribute('id', 'todo-form');
 
     form.appendChild(formUl);
-    form.appendChild(submitBtn);
+    form.appendChild(todoSubmitBtn);
     document.body.appendChild(form);
 }

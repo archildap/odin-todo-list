@@ -6,13 +6,18 @@ export default function printTodos(arr, currentProject) {
     todosContainer.appendChild(projectHeader);
     document.body.appendChild(todosContainer);
 
+    if (arr === undefined) {
+        return;
+    }
+
+
     arr.map((todo, index) => {
         const todoDiv = document.createElement('div');
         const todoTitle = document.createElement('p');
         const removeTodoBtn = document.createElement('button');
         const todoDueDate = document.createElement('p');
 
-        removeTodoBtn.textContent = 'remove';
+        removeTodoBtn.textContent = 'X';
         todoTitle.textContent = todo.title;
         todoDueDate.textContent = todo.dueDate;
 
