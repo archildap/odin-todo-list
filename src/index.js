@@ -2,6 +2,7 @@ import makeTodo from './makeTodo.js';
 import printTodos from './printTodos.js';
 import todoField from './todoField.js';
 import printProjects from './printProjects.js';
+import header from './header.js';
 import './style.css';
 
 
@@ -30,6 +31,10 @@ function projectsController() {
     }
 
     addProject('daily', projects);
+    addTodo(makeTodo('lorem ipsum dorem', 'asdf', '2024-08-04T11:15', 'high'), 'daily')
+    addTodo(makeTodo('lorem ipsum dorem', 'asdf', '2024-08-04T11:15', 'high'), 'daily')
+    addTodo(makeTodo('lorem ipsum dorem', 'asdf', '2024-08-04T11:15', 'high'), 'daily')
+    addTodo(makeTodo('lorem ipsum dorem', 'asdf', '2024-08-04T11:15', 'high'), 'daily')
 
     return { addProject, getProjects, addTodo, removeTodo, removeProject }
 }
@@ -41,16 +46,13 @@ function displayController() {
     let currentProject = 'daily';
 
     const clearScreen = () => {
-        const todosContainer = document.querySelector('.todos-container');
-        const projectsSection = document.querySelector('.project-section');
-        const todoForm = document.querySelector('#todo-form');
-        projectsSection.remove();
-        todosContainer.remove();
-        todoForm.remove();
+        const content = document.querySelector('#content');
+        content.remove()
     }
 
     const printScreen = () => {
-        printProjects(projects.getProjects());
+        header();
+        printProjects(projects.getProjects(), currentProject);
         todoField();
         printTodos(projects.getProjects()[currentProject], currentProject);
         document.querySelector('.todo-submit-btn').addEventListener('click', handleTodoSubmit);
@@ -65,6 +67,7 @@ function displayController() {
     const updateScreen = () => {
         clearScreen();
         printScreen();
+        console.log('reload')
     }
 
     const handleTodoSubmit = (event) => {
@@ -87,13 +90,17 @@ function displayController() {
     }
 
     const handleProjectChange = (event) => {
+        if (currentProject === event.target.textContent.toLowerCase()) {
+            return;
+        };
         currentProject = event.target.textContent.toLowerCase();
         updateScreen();
     }
 
-    const handleAddProject = () => {
-        const projectName = document.querySelector('.project-input').value;
-        if (projectName) {
+    const handleAddProject = (e) => {
+        e.preventDefault();
+        const projectName = document.querySelector('.project-input').value.toLowerCase();
+        if (projectName && !projects.getProjects()[projectName]) {
             projects.addProject(projectName);
             currentProject = projectName;
             updateScreen();
@@ -109,7 +116,8 @@ function displayController() {
     }
 
     const handleProjectRemove = (e) => {
-        const projectToRemove = e.target.dataset.project
+        e.stopPropagation();
+        const projectToRemove = e.target.dataset.project;
         projects.removeProject(projectToRemove);
         if (projectToRemove === currentProject) {
             currentProject = Object.keys(projects.getProjects())[0];

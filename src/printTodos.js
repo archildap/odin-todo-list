@@ -1,10 +1,11 @@
 export default function printTodos(arr, currentProject) {
+    const content = document.querySelector('#content');
     const todosContainer = document.createElement('div');
     const projectHeader = document.createElement('h3');
     projectHeader.textContent = currentProject;
     todosContainer.classList.add('todos-container');
     todosContainer.appendChild(projectHeader);
-    document.body.appendChild(todosContainer);
+    content.appendChild(todosContainer);
 
     if (arr === undefined) {
         return;

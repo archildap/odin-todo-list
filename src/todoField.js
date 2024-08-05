@@ -27,6 +27,7 @@ function dropDownMenu(question, options, id) {
     fieldLabel.setAttribute('for', id);
     fieldSelect.setAttribute('id', id);
     fieldSelect.setAttribute('name', id);
+    fieldSelect.setAttribute('required', '')
     fieldOption.setAttribute('value', '');
 
     fieldLabel.textContent = question;
@@ -51,17 +52,20 @@ export default function todoField() {
     const form = document.createElement('form');
     const formUl = document.createElement('ul');
     const todoSubmitBtn = document.createElement('button');
+    const content = document.querySelector('#content');
 
-    formUl.appendChild(fieldMaker('title', 'text', 'todo-title'));
-    formUl.appendChild(fieldMaker('description', 'text', 'todo-description'));
-    formUl.appendChild(fieldMaker('dueDate', 'datetime-local', 'todo-dueDate'));
+    formUl.appendChild(fieldMaker('Title', 'text', 'todo-title'));
+    formUl.appendChild(fieldMaker('Description', 'text', 'todo-description'));
+    formUl.appendChild(fieldMaker('Due Date', 'datetime-local', 'todo-dueDate'));
     formUl.appendChild(dropDownMenu('Task Priority', ['low', 'Medium', 'High'], 'todo-priority'));
 
+
     todoSubmitBtn.textContent = 'Add Task';
-    todoSubmitBtn.classList.add('todo-submit-btn');
+    todoSubmitBtn.classList.add('todo-submit-btn', 'btn');
+    todoSubmitBtn.setAttribute('type', 'submit')
     form.setAttribute('id', 'todo-form');
 
     form.appendChild(formUl);
     form.appendChild(todoSubmitBtn);
-    document.body.appendChild(form);
+    content.appendChild(form);
 }
