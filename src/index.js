@@ -22,6 +22,10 @@ function projectsController() {
         projects[project].splice(index, 1);
     }
 
+    const changeStatus = (project, index) => {
+        projects[project][index].check = projects[project][index].check === false ? true : false;
+    }
+
     const removeProject = (project) => {
         delete projects[project];
     }
@@ -31,12 +35,12 @@ function projectsController() {
     }
 
     addProject('daily', projects);
-    addTodo(makeTodo('lorem ipsum dorem', 'asdf', '2024-08-04T11:15', 'high'), 'daily')
-    addTodo(makeTodo('lorem ipsum dorem', 'asdf', '2024-08-04T11:15', 'high'), 'daily')
-    addTodo(makeTodo('lorem ipsum dorem', 'asdf', '2024-08-04T11:15', 'high'), 'daily')
-    addTodo(makeTodo('lorem ipsum dorem', 'asdf', '2024-08-04T11:15', 'high'), 'daily')
+    addTodo(makeTodo('lorem ipsum dorem', 'asdf', '2024-08-06T11:15', 'high'), 'daily')
+    addTodo(makeTodo('lorem ipsum dorem', 'asdf', '2024-08-06T11:15', 'high'), 'daily')
+    addTodo(makeTodo('lorem ipsum dorem', 'asdf', '2024-08-06T11:15', 'high'), 'daily')
+    addTodo(makeTodo('lorem ipsum dorem', 'asdf', '2024-08-06T11:15', 'high'), 'daily')
 
-    return { addProject, getProjects, addTodo, removeTodo, removeProject }
+    return { addProject, getProjects, addTodo, removeTodo, removeProject, changeStatus }
 }
 
 
@@ -62,12 +66,12 @@ function displayController() {
         if (document.querySelectorAll('.todo-remove')) {
             document.querySelectorAll('.todo-remove').forEach(item => item.addEventListener('click', handleTodoRemove));
         }
+        document.querySelectorAll('.complete-todo').forEach(item => item.addEventListener('click', handleTodoComplete));
     }
 
     const updateScreen = () => {
         clearScreen();
         printScreen();
-        console.log('reload')
     }
 
     const handleTodoSubmit = (event) => {
@@ -112,6 +116,14 @@ function displayController() {
         const todoIndex = todo.dataset.index;
 
         projects.removeTodo(currentProject, todoIndex);
+        updateScreen();
+    }
+
+    const handleTodoComplete = (e) => {
+        const todo = e.target.parentNode
+        const todoIndex = todo.dataset.index;
+
+        projects.changeStatus(currentProject, todoIndex);
         updateScreen();
     }
 

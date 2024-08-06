@@ -70,6 +70,7 @@ export default function printProjects(obj, currentProject) {
             projectRemove.src = Cancel;
             taskSquareSvg.src = Task;
             projectRemove.dataset.project = key;
+            projectRemove.setAttribute('title', 'Remove Project');
             projectDiv.classList.add('project');
             projectRemove.classList.add('project-remove');
             taskSquareSvg.classList.add('square-task-svg');
