@@ -22,6 +22,22 @@ body {
     grid-template-rows: 12% 1fr;
 }
 
+
+.btn {
+    font-size: 1rem;
+    width: 100%;
+    padding: 0.3rem 1rem;
+    background: rgb(0, 154, 157);
+    border: none;
+    color: rgb(255, 255, 255);
+}
+
+.btn:hover {
+    cursor: pointer;
+    background: rgb(0, 205, 209);
+    box-shadow: 0 0 0.5rem rgb(155, 155, 155);
+}
+
 /* header section */
 
 .header {
@@ -128,23 +144,8 @@ body {
     box-shadow: 0 0 0.3rem rgb(155, 155, 155);
 }
 
-.project-submit {
-    font-size: 1rem;
-    max-width: 90%;
-    padding: 0.3rem 1rem;
-    background: rgb(0, 154, 157);
-    border: none;
-    color: rgb(255, 255, 255);
-}
-
-.project-submit:hover {
-    cursor: pointer;
-    background: rgb(0, 205, 209);
-    box-shadow: 0 0 0.5rem rgb(155, 155, 155);
-}
-
 .project-input {
-    max-width: 90%;
+    width: 100%;
     padding: 0.3rem 0.6rem;
     display: block;
     border: 0.1rem solid rgba(128, 128, 128, 0.633);
@@ -179,7 +180,6 @@ body {
 .square-task-svg {
     border-radius: 100%;
     height: 1.5rem;
-    background: white;
 }
 
 
@@ -232,8 +232,8 @@ body {
 
 .complete-todo {
     grid-area: 1 / 1 / 3 / 2;
-    height: 1.2rem;
-    width: 1.2rem;
+    height: 1.3rem;
+    width: 1.3rem;
     border: 2px solid rgb(49, 49, 49);
     border-radius: 100%;
     position: relative;
@@ -251,6 +251,11 @@ body {
     border-bottom: 0.2rem solid grey;
     border-right: 0.2rem solid grey;
     transform: rotate(45deg);
+}
+
+.complete-todo:active::after {
+    border-bottom: 0.2rem solid green;
+    border-right: 0.2rem solid green;
 }
 
 .check::after {
@@ -280,6 +285,71 @@ body {
 
 /* todo form */
 
-#todo-form {
+#todo-form-section {
     grid-area: 2 / 3 / 3 / 4;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    padding: 1rem;
+}
+
+.todo-form-toggle {
+    width: 2.5rem;
+    height: 2.5rem;
+}
+
+.todo-form-toggle:hover {
+    border-radius: 20rem;
+    width: 2.6rem;
+    height: 2.6rem;
+    cursor: pointer;
+    box-shadow: 0 0 0.3rem rgb(155, 155, 155);
+}
+
+#todo-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem;
+    background: rgba(11, 182, 168, 0.468);
+    box-shadow: 0 0 0.2rem rgb(71, 71, 71);
+}
+
+#todo-form ul {
+    width: 100%;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+#todo-form li {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+#todo-form input,
+select {
+    border: rgb(193, 193, 193) 1px solid;
+    width: 100%;
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.4rem;
+}
+
+#todo-form input:focus,
+select:focus {
+    border: 1px solid black;
+    outline: none;
+    box-shadow: 0 0 3px rgb(175, 175, 175);
+}
+
+#todo-form input:valid,
+select:valid {
+    border: 1px solid rgb(0, 255, 38);
 }

@@ -1,3 +1,7 @@
+import AddSignGreen from './images/add-sign-green.svg';
+import handleFormToggle from './handleFormToggle';
+
+
 function fieldMaker(fieldLabel, inputType, idName) {
     const fieldLi = document.createElement('li');
     const label = document.createElement('label');
@@ -17,6 +21,7 @@ function fieldMaker(fieldLabel, inputType, idName) {
 
     return fieldLi;
 }
+
 
 function dropDownMenu(question, options, id) {
     const fieldLi = document.createElement('li');
@@ -49,6 +54,8 @@ function dropDownMenu(question, options, id) {
 }
 
 export default function todoField() {
+    const todoFormSection = document.createElement('div');
+    const todoFormToggle = new Image();
     const form = document.createElement('form');
     const formUl = document.createElement('ul');
     const todoSubmitBtn = document.createElement('button');
@@ -57,15 +64,23 @@ export default function todoField() {
     formUl.appendChild(fieldMaker('Title', 'text', 'todo-title'));
     formUl.appendChild(fieldMaker('Description', 'text', 'todo-description'));
     formUl.appendChild(fieldMaker('Due Date', 'datetime-local', 'todo-dueDate'));
-    formUl.appendChild(dropDownMenu('Task Priority', ['low', 'Medium', 'High'], 'todo-priority'));
+    formUl.appendChild(dropDownMenu('Task Priority', ['Low', 'Medium', 'High'], 'todo-priority'));
 
-
+    todoFormToggle.src = AddSignGreen;
+    todoFormToggle.classList.add('todo-form-toggle');
+    todoFormToggle.setAttribute('title', 'Add Todo');
     todoSubmitBtn.textContent = 'Add Task';
     todoSubmitBtn.classList.add('todo-submit-btn', 'btn');
+    todoFormSection.setAttribute('id', 'todo-form-section');
     todoSubmitBtn.setAttribute('type', 'submit')
     form.setAttribute('id', 'todo-form');
 
+    form.style.display = 'none';
+    todoFormToggle.addEventListener('click', (e) => handleFormToggle(e, form, document.getElementById('todo-title')));
+
     form.appendChild(formUl);
     form.appendChild(todoSubmitBtn);
-    content.appendChild(form);
+    todoFormSection.appendChild(todoFormToggle);
+    todoFormSection.appendChild(form);
+    content.appendChild(todoFormSection);
 }

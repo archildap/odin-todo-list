@@ -1,23 +1,8 @@
 import Cancel from './images/cancel.png';
 import Add from './images/add.svg';
 import Task from './images/task-square.svg';
+import handleFormToggle from './handleFormToggle';
 
-const handleSubmitFormToggle = (e) => {
-    const projectForm = document.querySelector('#project-form');
-    document.body.addEventListener('click', (e) => {
-        projectForm.style.display = 'none';
-    })
-    projectForm.addEventListener('click', (e) => {
-        e.stopPropagation();
-    })
-    if (projectForm.style.display === 'flex') {
-        projectForm.style.display = 'none'
-    } else {
-        projectForm.style.display = 'flex';
-        document.querySelector('.project-input').focus();
-    }
-    e.stopPropagation()
-}
 
 export default function printProjects(obj, currentProject) {
     const projectsSection = document.createElement('nav');
@@ -43,8 +28,7 @@ export default function printProjects(obj, currentProject) {
 
     projectSubmitForm.style.display = 'none';
 
-    projectSubmitToggle.addEventListener('click', handleSubmitFormToggle);
-
+    projectSubmitToggle.addEventListener('click', (e) => handleFormToggle(e, projectSubmitForm, addProjectInput));
 
     projectSubmitForm.appendChild(addProjectBtn);
     projectSubmitForm.appendChild(addProjectInput);

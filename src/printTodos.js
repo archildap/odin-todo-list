@@ -1,4 +1,4 @@
-import capitalizeString from "./capitalizeString";
+import capitalizeString from "./capitalizeString.js";
 import TrashSvg from './images/trash.svg';
 import { format, isToday } from "date-fns";
 

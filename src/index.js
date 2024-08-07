@@ -5,7 +5,6 @@ import printProjects from './printProjects.js';
 import header from './header.js';
 import './style.css';
 
-
 function projectsController() {
     const projects = {};
 
