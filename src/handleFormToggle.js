@@ -1,7 +1,11 @@
 export default function handleFormToggle(e, form, input) {
-    document.body.addEventListener('click', (e) => {
+
+    const handleClickAway = (e) => {
         form.style.display = 'none';
-    })
+    }
+
+    document.body.addEventListener('click', handleClickAway);
+
     form.addEventListener('click', (e) => {
         e.stopPropagation();
     })

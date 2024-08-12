@@ -33,6 +33,7 @@ export default function printTodos(arr, currentProject) {
         removeTodoBtn.src = TrashSvg;
         todoTitle.textContent = todo.title;
         todoDueDate.textContent = dueDate;
+        todoTitle.setAttribute('title', todo.title);
 
         todoDiv.classList.add('todo-container');
         todoDiv.dataset.index = index;

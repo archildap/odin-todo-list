@@ -33,11 +33,7 @@ function projectsController() {
         return { ...projects };
     }
 
-    addProject('daily', projects);
-    addTodo(makeTodo('lorem ipsum dorem', 'asdf', '2024-08-06T11:15', 'high'), 'daily')
-    addTodo(makeTodo('lorem ipsum dorem', 'asdf', '2024-08-06T11:15', 'high'), 'daily')
-    addTodo(makeTodo('lorem ipsum dorem', 'asdf', '2024-08-06T11:15', 'high'), 'daily')
-    addTodo(makeTodo('lorem ipsum dorem', 'asdf', '2024-08-06T11:15', 'high'), 'daily')
+    addProject('today', projects);
 
     return { addProject, getProjects, addTodo, removeTodo, removeProject, changeStatus }
 }
@@ -46,7 +42,7 @@ function projectsController() {
 function displayController() {
     const projects = projectsController();
 
-    let currentProject = 'daily';
+    let currentProject = 'today';
 
     const clearScreen = () => {
         const content = document.querySelector('#content');
@@ -59,7 +55,7 @@ function displayController() {
         todoField();
         printTodos(projects.getProjects()[currentProject], currentProject);
         document.querySelector('.todo-submit-btn').addEventListener('click', handleTodoSubmit);
-        document.querySelector('.project-submit').addEventListener('click', handleAddProject);
+        document.querySelector('.project-submit').addEventListener('click', handleProjectSubmit);
         document.querySelectorAll('.project').forEach(item => item.addEventListener('click', handleProjectChange));
         document.querySelectorAll('.project-remove').forEach(item => item.addEventListener('click', handleProjectRemove));
         if (document.querySelectorAll('.todo-remove')) {
@@ -100,7 +96,7 @@ function displayController() {
         updateScreen();
     }
 
-    const handleAddProject = (e) => {
+    const handleProjectSubmit = (e) => {
         e.preventDefault();
         const projectName = document.querySelector('.project-input').value.toLowerCase();
         if (projectName && !projects.getProjects()[projectName]) {
