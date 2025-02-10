@@ -6,34 +6,54 @@ import header from './header.js';
 import './style.css';
 
 function projectsController() {
-    const projects = {};
+
+    let projects = {};
+
+    const checkLocalStorage = () => {
+        return (JSON.parse(localStorage.getItem('projects')))
+    }
+
+    if (checkLocalStorage()) {
+        projects = JSON.parse(localStorage.getItem('projects'));
+    }
 
     const addProject = (projectName) => {
         projects[projectName] = [];
+        localStorage.setItem('projects', JSON.stringify(projects));
     }
 
     const addTodo = (obj, project) => {
         if (!projects[project]) return;
         projects[project].push(obj);
+        localStorage.setItem('projects', JSON.stringify(projects));
     }
 
     const removeTodo = (project, index) => {
         projects[project].splice(index, 1);
+        localStorage.setItem('projects', JSON.stringify(projects));
+
     }
 
     const changeStatus = (project, index) => {
         projects[project][index].check = projects[project][index].check === false ? true : false;
+        localStorage.setItem('projects', JSON.stringify(projects));
+
     }
 
     const removeProject = (project) => {
         delete projects[project];
+        localStorage.setItem('projects', JSON.stringify(projects));
     }
 
     const getProjects = () => {
-        return { ...projects };
+        return { ...JSON.parse(localStorage.getItem('projects')) };
     }
 
-    addProject('today', projects);
+    if (!checkLocalStorage()) {
+        addProject('today', projects);
+        localStorage.setItem('currentProject', 'today');
+    }
+
 
     return { addProject, getProjects, addTodo, removeTodo, removeProject, changeStatus }
 }
@@ -42,8 +62,6 @@ function projectsController() {
 function displayController() {
     const projects = projectsController();
 
-    let currentProject = 'today';
-
     const clearScreen = () => {
         const content = document.querySelector('#content');
         content.remove()
@@ -51,9 +69,9 @@ function displayController() {
 
     const printScreen = () => {
         header();
-        printProjects(projects.getProjects(), currentProject);
+        printProjects(projects.getProjects(), localStorage.getItem('currentProject'));
         todoField();
-        printTodos(projects.getProjects()[currentProject], currentProject);
+        printTodos(projects.getProjects()[localStorage.getItem('currentProject')], localStorage.getItem('currentProject'));
         document.querySelector('.todo-submit-btn').addEventListener('click', handleTodoSubmit);
         document.querySelector('.project-submit').addEventListener('click', handleProjectSubmit);
         document.querySelectorAll('.project').forEach(item => item.addEventListener('click', handleProjectChange));
@@ -80,7 +98,7 @@ function displayController() {
             return
         }
 
-        projects.addTodo(makeTodo(title.value, description.value, dueDate.value, priority.value), currentProject);
+        projects.addTodo(makeTodo(title.value, description.value, dueDate.value, priority.value), localStorage.getItem('currentProject'));
         title.value = '';
         description.value = '';
         dueDate.value = '';
@@ -89,10 +107,10 @@ function displayController() {
     }
 
     const handleProjectChange = (event) => {
-        if (currentProject === event.target.textContent.toLowerCase()) {
+        if (localStorage.getItem('currentProject') === event.target.textContent.toLowerCase()) {
             return;
         };
-        currentProject = event.target.textContent.toLowerCase();
+        localStorage.setItem('currentProject', event.target.textContent.toLowerCase());
         updateScreen();
     }
 
@@ -101,7 +119,7 @@ function displayController() {
         const projectName = document.querySelector('.project-input').value.toLowerCase();
         if (projectName && !projects.getProjects()[projectName]) {
             projects.addProject(projectName);
-            currentProject = projectName;
+            localStorage.setItem('currentProject', projectName);
             updateScreen();
         }
     }
@@ -110,7 +128,7 @@ function displayController() {
         const todo = e.target.parentNode
         const todoIndex = todo.dataset.index;
 
-        projects.removeTodo(currentProject, todoIndex);
+        projects.removeTodo(localStorage.getItem('currentProject'), todoIndex);
         updateScreen();
     }
 
@@ -118,7 +136,7 @@ function displayController() {
         const todo = e.target.parentNode
         const todoIndex = todo.dataset.index;
 
-        projects.changeStatus(currentProject, todoIndex);
+        projects.changeStatus(localStorage.getItem('currentProject'), todoIndex);
         updateScreen();
     }
 
@@ -126,8 +144,8 @@ function displayController() {
         e.stopPropagation();
         const projectToRemove = e.target.dataset.project;
         projects.removeProject(projectToRemove);
-        if (projectToRemove === currentProject) {
-            currentProject = Object.keys(projects.getProjects())[0];
+        if (projectToRemove === localStorage.getItem('currentProject')) {
+            localStorage.setItem('currentProject', Object.keys(projects.getProjects())[0])
         }
         updateScreen();
     }

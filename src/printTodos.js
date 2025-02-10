@@ -4,6 +4,10 @@ import { format, isToday } from "date-fns";
 
 
 export default function printTodos(arr, currentProject) {
+    if (arr === undefined) {
+        return;
+    }
+
     const content = document.querySelector('#content');
     const todosContainer = document.createElement('div');
     const projectHeader = document.createElement('h3');
@@ -12,10 +16,6 @@ export default function printTodos(arr, currentProject) {
     todosContainer.classList.add('todos-container');
     todosContainer.appendChild(projectHeader);
     content.appendChild(todosContainer);
-
-    if (arr === undefined) {
-        return;
-    }
 
     arr.map((todo, index) => {
         const todoDiv = document.createElement('div');
@@ -41,6 +41,9 @@ export default function printTodos(arr, currentProject) {
         removeTodoBtn.setAttribute('title', 'Remove Todo');
         completeTodo.classList.add('complete-todo');
         todo.check === true ? completeTodo.classList.add('check') : {};
+        todo.priority === 'medium' ? todoDiv.classList.add('medium') : '';
+        todo.priority === 'high' ? todoDiv.classList.add('high') : '';
+        todo.priority === 'low' ? todoDiv.classList.add('low') : '';
 
 
         todoDiv.appendChild(todoTitle);

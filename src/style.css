@@ -214,6 +214,19 @@ body {
     justify-items: start;
 }
 
+.low {
+    border-top: #A1C398 0.5rem solid;
+}
+
+.medium {
+    border-top: 0.5rem #d2cd3b solid;
+}
+
+.high {
+    border-top: 0.5rem solid #FA7070;
+}
+
+
 .todo-container:hover {
     background: rgb(230, 230, 230);
 }
@@ -282,6 +295,7 @@ body {
 
 .todo-container:has(.check) {
     color: rgb(127, 127, 127);
+    border-top: 0.5rem solid #797979
 }
 
 .todo-container:has(.check) p:nth-child(1)::after {
@@ -427,6 +441,22 @@ select:valid {
         padding: 0.6rem;
     }
 
+    .low {
+        border-top: #A1C398 0.4rem solid;
+    }
+
+    .medium {
+        border-top: 0.4rem #d2cd3b solid;
+    }
+
+    .high {
+        border-top: 0.4rem solid #FA7070;
+    }
+
+    .todo-container:has(.check) {
+        border-top: 0.4rem solid;
+    }
+
     .complete-todo {
         height: 1.2rem;
         width: 1.2rem;
@@ -452,6 +482,8 @@ select:valid {
     .todo-container:has(.check) p:nth-child(1)::after {
         border-bottom: 0.15rem solid gray;
     }
+
+
 
     /* todo form */
     #todo-form-section {
@@ -488,6 +520,22 @@ select:valid {
 
     .header-logo {
         font-size: 1.5rem;
+    }
+
+    .low {
+        border-top: #A1C398 0.3rem solid;
+    }
+
+    .medium {
+        border-top: 0.3rem #d2cd3b solid;
+    }
+
+    .high {
+        border-top: 0.3rem solid #FA7070;
+    }
+
+    .todo-container:has(.check) {
+        border-top: 0.3rem solid;
     }
 
 
@@ -570,6 +618,22 @@ select:valid {
 
     .todo-container {
         padding: 0.5rem;
+    }
+
+    .low {
+        border-top: #A1C398 0.2rem solid;
+    }
+
+    .medium {
+        border-top: 0.2rem #d2cd3b solid;
+    }
+
+    .high {
+        border-top: 0.2rem solid #FA7070;
+    }
+
+    .todo-container:has(.check) {
+        border-top: 0.2rem solid;
     }
 
     .todo-container p:nth-child(1) {
