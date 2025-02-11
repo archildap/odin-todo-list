@@ -381,7 +381,10 @@ select:valid {
     border: 1px solid rgb(0, 255, 38);
 }
 
-
+#todo-form input:invalid,
+select:invalid {
+    border: 1px solid rgb(255, 0, 34);
+}
 
 
 

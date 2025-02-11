@@ -4,6 +4,7 @@ import todoField from './todoField.js';
 import printProjects from './printProjects.js';
 import header from './header.js';
 import './style.css';
+import { isToday } from "date-fns";
 
 function projectsController() {
 
@@ -69,6 +70,13 @@ function displayController() {
 
     const printScreen = () => {
         header();
+        if (projects.getProjects().today) {
+            projects.getProjects().today.forEach((item, index) => {
+                if (!isToday(item.dueDate)) {
+                    projects.removeTodo('today', index);
+                }
+            })
+        }
         printProjects(projects.getProjects(), localStorage.getItem('currentProject'));
         todoField();
         printTodos(projects.getProjects()[localStorage.getItem('currentProject')], localStorage.getItem('currentProject'));
@@ -94,7 +102,10 @@ function displayController() {
         const dueDate = document.getElementById('todo-dueDate');
         const priority = document.getElementById('todo-priority');
 
-        if (title.value === '' || description.value === '' || dueDate.value === '' || priority.value === '') {
+        if (title.value === '' || description.value === '' || dueDate.value === '' || priority.value === '') return;
+
+        if (localStorage.getItem('currentProject') === 'today' && !isToday(dueDate.value)) {
+            dueDate.setCustomValidity('Date is not today!');
             return
         }
 
