@@ -4,7 +4,7 @@ import todoField from './todoField.js';
 import printProjects from './printProjects.js';
 import header from './header.js';
 import './style.css';
-import { isToday } from "date-fns";
+import { isToday, isPast } from "date-fns";
 
 function projectsController() {
 
@@ -50,13 +50,22 @@ function projectsController() {
         return { ...JSON.parse(localStorage.getItem('projects')) };
     }
 
+    const removeInvalidTodos = () => {
+        if (projects.today) {
+            projects.today.forEach((item, index) => {
+                if (!isToday(item.dueDate)) {
+                    removeTodo('today', index);
+                }
+            })
+        }
+    }
+
     if (!checkLocalStorage()) {
         addProject('today', projects);
         localStorage.setItem('currentProject', 'today');
     }
 
-
-    return { addProject, getProjects, addTodo, removeTodo, removeProject, changeStatus }
+    return { addProject, getProjects, addTodo, removeTodo, removeProject, changeStatus, removeInvalidTodos }
 }
 
 
@@ -70,13 +79,7 @@ function displayController() {
 
     const printScreen = () => {
         header();
-        if (projects.getProjects().today) {
-            projects.getProjects().today.forEach((item, index) => {
-                if (!isToday(item.dueDate)) {
-                    projects.removeTodo('today', index);
-                }
-            })
-        }
+        projects.removeInvalidTodos();
         printProjects(projects.getProjects(), localStorage.getItem('currentProject'));
         todoField();
         printTodos(projects.getProjects()[localStorage.getItem('currentProject')], localStorage.getItem('currentProject'));
@@ -95,6 +98,19 @@ function displayController() {
         printScreen();
     }
 
+    const checkTodoValidity = (title, description, dueDate, priority) => {
+        if (localStorage.getItem('currentProject') === 'today' && !isToday(dueDate.value)) {
+            dueDate.setCustomValidity('Date is not today!');
+            return false
+        } else if (isPast(dueDate.value) && !isToday(dueDate.value)) {
+            dueDate.setCustomValidity('Date is not today!');
+            return false
+        } else if (title.value === '' || description.value === '' || dueDate.value === '' || priority.value === '') {
+            return false
+        }
+        return true;
+    }
+
     const handleTodoSubmit = (event) => {
         event.preventDefault();
         const title = document.getElementById('todo-title');
@@ -102,12 +118,7 @@ function displayController() {
         const dueDate = document.getElementById('todo-dueDate');
         const priority = document.getElementById('todo-priority');
 
-        if (title.value === '' || description.value === '' || dueDate.value === '' || priority.value === '') return;
-
-        if (localStorage.getItem('currentProject') === 'today' && !isToday(dueDate.value)) {
-            dueDate.setCustomValidity('Date is not today!');
-            return
-        }
+        if (!checkTodoValidity(title, description, dueDate, priority)) return;
 
         projects.addTodo(makeTodo(title.value, description.value, dueDate.value, priority.value), localStorage.getItem('currentProject'));
         title.value = '';

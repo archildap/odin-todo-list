@@ -23,11 +23,11 @@ export default function printTodos(arr, currentProject) {
         const removeTodoBtn = new Image();
         const todoDueDate = document.createElement('p');
         const completeTodo = document.createElement('div');
-        let dueDate = format(new Date(), 'y') === format(todo.dueDate, 'y') ? format(todo.dueDate, 'MMM d h:m a') : format(todo.dueDate, 'MMM d y');
+        let dueDate = format(new Date(), 'y') === format(todo.dueDate, 'y') ? format(todo.dueDate, 'MMM d h:mm a') : format(todo.dueDate, 'MMM d y');
 
         if (isToday(todo.dueDate)) {
             todoDueDate.style.color = '#058527';
-            dueDate = `Today ${format(todo.dueDate, 'h:m a')}`;
+            dueDate = `Today ${format(todo.dueDate, 'h:mm a')}`;
         };
 
         removeTodoBtn.src = TrashSvg;
